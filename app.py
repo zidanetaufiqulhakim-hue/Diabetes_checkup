@@ -6,6 +6,11 @@ import joblib
 import pickle 
 import os
 
+desclaimer = """⚠ **Disclaimer:**  
+This application uses **synthetic (artificially generated) health data that reflect real data from Kaggle.** Use this App for **educational, research, and self-screening purposes only**.  
+It is **not** intended to diagnose, treat, or replace professional medical evaluation.  
+For any health concerns, please consult a licensed healthcare provider."""
+
 #-------------------------------- FUNCTION DEFINITIONS --------------------------------#
 
 def predict_diabetes_risk(input_data):
@@ -65,7 +70,7 @@ def sleep_quality_category(sleep_hours):
     else:
         return "long_sleep"
 
-def diet_score_checkbox():
+def diet_score_radio():
 
     diet_score = st.radio( "Diet Quality Score",
     options=[3, 5, 7, 9],
@@ -98,7 +103,7 @@ else:
     pass
 
 # --------Side Bar Go-to---------
-st.sidebar.title("Go To")
+st.sidebar.title("Go to:")
 
 # Container 1
 with st.sidebar.container():
@@ -115,13 +120,27 @@ with st.sidebar.container():
     if st.button("About The Model"):
         st.session_state.Page = "About The Model"
 
+# copyright info
+st.sidebar.divider()
+st.sidebar.markdown("© 2025 zidanetaufiqulhakim-hue (GitHub). All rights reserved.")
+
 #-------------------------------- RENDERING PAGES --------------------------------#
 
 # -------- Page: Estimate Diabtes Risk ---------# 
 
 if st.session_state.Page == "Estiiamate Diabetes Risk":
     st.title("Diabetes Risk Estimator")
-    st.write("This app estimates your risk of developing diabetes based on your personal and lifestyle information.")
+    st.write("Welcome to the Diabetes Risk Estimator! 🩺 This app helps you assess your risk of diabetes based on your personal information, lifestyle habits, and blood sugar levels.")
+    
+    # Instructions to use the app
+    st.markdown("## How to use:")
+    st.markdown("1. Fill in your **basic information**: gender, age, weight, and height")
+    st.markdown("2. **Tell me about your lifestyle**: family history of diabetes, exercise frequency, diet quality, and sleep hours.")
+    st.markdown("3. **Click** the **'Estimate Diabetes Risk'** button to get your risk score and interpretation.")
+
+    # note to users
+    st.info(desclaimer)
+    st.divider()
 
     # Enter Basic Information
     st.header("1. Enter Your Basic Information:")
@@ -131,6 +150,7 @@ if st.session_state.Page == "Estiiamate Diabetes Risk":
     weight = st.number_input("Weight (in kg)", min_value=0.0, max_value=300.0, value=70.0)
     height = st.number_input("Height (in cm)", min_value=0.0,  max_value=250.0, value=170.0)
     bmi = weight / ((height / 100) ** 2) # Calculate BMI from weight and height
+    st.divider()
 
     # ---Gether Lifestyle Information---
     st.header("2. Tell Me about Your Lifestyle:")
@@ -145,11 +165,12 @@ if st.session_state.Page == "Estiiamate Diabetes Risk":
 
     # wha best describes your diet?
     st.subheader("What best describes your diet?")
-    diet_score = diet_score_checkbox()
+    diet_score = diet_score_radio()
 
     # How many hours do you sleep per day?
     st.subheader("How many hours do you sleep per day?")
     sleep_hours_per_day = st.number_input("Sleep Duration",min_value=0, max_value=12, value=7)
+    st.divider()
 
     # Feature Engineering the input data
     age_bmi = age * bmi
@@ -169,33 +190,53 @@ if st.session_state.Page == "Estiiamate Diabetes Risk":
         "diet_score_category": diet_score_category
         }
 
-        # Predict diabetes risk
-    
+    # Predict diabetes risk
+    st.header("3. Get Your Diabetes Risk Estimate:")
     if st.button("Estimate Diabetes Risk"):
         risk_score = predict_diabetes_risk(input_data)
-        st.markdown("Estimated Diabetes Risk Score:")
+    
         c1, c2 = st.columns(2)
         with c1:
-            # Display the risk scorestreamli
-            st.header(f"{risk_score[0]:.0f}")
+            st.markdown("**Estimated Diabetes Risk Score:**")
+            # Display the risk scorestreamlit
+            c1a, c1b, c1c = st.columns(3)
+            with c1b: # -> center the output
+                st.markdown(f"# {risk_score[0]:.0f}")
 
         with c2:
-            # Display risk interpretationstreamlit
+                # Display risk categories
+                st.markdown(" *Below 26: Low Risk | 26-40: Moderate Risk | Above 40: High Risk*")
+
+                # Display risk interpretationstreamlit
                 if risk_score < 28:
                     st.success("Low Risk of Diabetes")
                 elif 28 <= risk_score <= 40:
                     st.warning("Moderate Risk of Diabetes")
                 elif risk_score > 40:
                     st.error("High Risk of Diabetes")
-                    
-                st.write(" Below 25: Low Risk | 26-40: Moderate Risk | Above 40: High Risk ")
+
 
 
 # -------- Page: Diabetes Diagnoser ---------#
-if st.session_state.Page == "Diabetes Diagnoser":
-    st.header("Check Diabetes Status Here!")
-    glucose_postprandial = st.number_input("Enter Postprandial Glucose Level (mg/dL) 3 Hours After Meal", min_value=70, max_value=300)
+elif st.session_state.Page == "Diabetes Diagnoser":
+    st.title("Check Diabetes Status Here!")
+    st.write(
+        "Welcome to the Diabetes Risk Checker! 🩺 This app helps you assess your diabetes based on your personal information, lifestyle habits, and blood sugar levels."
+    )
 
+    # Instructions to use the app
+    st.markdown("## How to use:")
+    st.markdown("1. Fill in your **basic information**: gender, age, weight, and height")
+    st.markdown("2. **Tell me about your lifestyle**: family history of diabetes, exercise frequency, diet quality, and sleep hours.")
+    st.markdown("3. Provide your **Postprandial Glucose Level** (3 hours after meal).")
+    st.markdown("4. **Click** the **'Diagnose Diabetes'** button to get your diabetes status.")
+
+    # Note to users
+    
+    st.info(desclaimer)
+    
+    st.divider()
+    
     # ---Enter Basic Information---
     st.header("1. Enter Your Basic Information:")
     gender = st.selectbox("Gender", options=["Male", "Female"])
@@ -203,19 +244,28 @@ if st.session_state.Page == "Diabetes Diagnoser":
     weight = st.number_input("Weight (in kg)", min_value=0.0, max_value=300.0, value=70.0)
     height = st.number_input("Height (in cm)", min_value=0.0,  max_value=250.0, value=170.0)
     bmi = weight / ((height / 100) ** 2) # Calculate BMI from weight and height
+    st.divider()
 
     # ---Gether Lifestyle Information---
     st.header("2. Tell Me about Your Lifestyle:")
 
     # is there any family history of diabetes?
     st.subheader("Is there any family history of diabetes?")
-    family_history_diabetes = st.selectbox(options=["Yes", "No"])
+    family_history_diabetes = st.selectbox("Famaily Diabetes History",options=["Yes", "No"])
 
     # # How often do you exercise per week?
     st.subheader("How often do you exercise per week?")
-    physical_activity_minutes_per_week = st.radio()
-    diet_score = st.slider("Diet Score (1-10)", min_value=1, max_value=10, value=5)
+    physical_activity_minutes_per_week = physical_activity_radio()
+
+    # wha best describes your diet?
+    st.subheader("What best describes your diet?")
+    diet_score = diet_score_radio()
     sleep_hours_per_day = st.number_input("Sleep Hours (hours per day)", min_value=0, max_value=12, value=7)
+    st.divider()
+
+    # ----Gather Postprandial Glucose Level After 3 hours of Meal----
+    st.header("3. After 3 hours of meal, how much is your Postprandial Glucose Level?")
+    glucose_postprandial = st.number_input("Enter Postprandial Glucose Level (mg/dL) 3 Hours After Meal", min_value=70, max_value=300)
 
     # Feature Engineering the input data
     age_bmi = age * bmi
@@ -235,7 +285,7 @@ if st.session_state.Page == "Diabetes Diagnoser":
         "diet_score_category": diet_score_category
         }
     
-    # Predict diabetes risk
+    # Predict diabetes risk before diagnosing then use it as input to diagnoser
     risk_score = predict_diabetes_risk(input_data)
 
     # Prepare input data for diabetes diagnoserstreamlit run
@@ -244,6 +294,7 @@ if st.session_state.Page == "Diabetes Diagnoser":
     "glucose_postprandial": glucose_postprandial
     }
     # Diagnose diabetes
+
     if st.button("Diagnose Diabetes"):
 
         if glucose_postprandial == None or glucose_postprandial <= 0:
@@ -251,16 +302,111 @@ if st.session_state.Page == "Diabetes Diagnoser":
         else:
             diabetes_status = diagnose_diabetes(input_data_db_diagnoser)
 
-            # Display diabetes statusstream
+            # Display diabetes status
             st.markdown("Diabetes Diagnosis Result:")
             if diabetes_status[0] == "No Diabetes":
-                st.markdown("HEALTHY!")
+                st.header("HEALTHY!")
                 st.success("You are not diagnosed with Diabetes.")
 
             elif diabetes_status[0] == "Pre-Diabetes":
-                st.markdown("You are diagnosed with Pre-Diabetess")
+                st.header("Pre-Diabetess")
                 st.warning("Please consult a healthcare professional for further evaluation.")
 
             else:
-                st.markdown("You are diagnosed with Diabetes")
+                st.header("Type 2 Diabetes")
                 st.error("Please consult a healthcare professional for proper management and treatment.")
+    
+
+# -------- Page: About The Model ---------#
+elif st.session_state.Page == "About The Model":
+    st.title("📘 About the Models")
+
+    st.markdown("""
+    This app uses **two machine learning models** to help you understand your diabetes status:
+
+    1. **Diabetes Risk Estimator** → predicts your *numerical* diabetes risk score.  
+    2. **Diabetes Diagnoser** → predicts whether you're **No Diabetes**, **Pre-Diabetes**, or **Type 2 Diabetes** based on your inputs.
+    """)
+
+    st.divider()
+
+    # ------------------------------
+    # DIABETES RISK ESTIMATOR
+    # ------------------------------
+    st.header("Diabetes Risk Estimator (Gradient Boosting Regressor)")
+
+    st.markdown("""
+    The **Diabetes Risk Estimator** is built using a **Gradient Boosting Regressor**,  
+    a model that combines many small decision trees to make a strong predictor.
+
+    ###Model Performance
+    - **MSE (Mean Squared Error):** `2.2601`  
+    - **MAE (Mean Absolute Error):** `1.2084`  
+
+    ###What These Metrics Mean:
+    - **MSE** measures how far predictions are from actual values **on average, squared**.  
+      - Lower = better.  
+      - An MSE of *2.26* means the model’s predictions are reasonably close to real risk scores.
+    - **MAE** measures the **average absolute difference** between predicted and actual scores.  
+      - An MAE of *1.20* means predictions are usually within **±1.2 risk points** of the true value.  
+      - This makes the estimator reliable for **screening**, not medical diagnosis.
+
+    ### Trained Features
+    - **Categorical Features:**  
+      `gender`, `family_history_diabetes`
+    - **Ordinal Features:**  
+      `age_category`, `sleep_quality`, `diet_score_category`
+    - **Numerical Features:**  
+      `health_score`, `age*bmi`
+    """)
+
+    st.divider()
+
+    # ------------------------------
+    # DIABETES DIAGNOSER
+    # ------------------------------
+    st.header("Diabetes Diagnoser (Logistic Regression)")
+
+    st.markdown("""
+    The Diabetes Diagnoser uses a **Logistic Regression classifier**,  
+    a simple and highly interpretable model commonly used in medical research.
+
+    It predicts:
+    - **No Diabetes**
+    - **Pre-Diabetes**
+    - **Type 2 Diabetes**
+
+    ###  Model Performance
+    | Class | Precision | Recall | F1-Score | Support |
+    |-------|-----------|--------|----------|----------|
+    | No Diabetes | 0.78 | 0.78 | 0.78 | 1406 |
+    | Pre-Diabetes | 0.63 | 0.63 | 0.63 | 1394 |
+    | Type 2 | 0.82 | 0.82 | 0.82 | 1400 |
+    | **Accuracy** | **0.74** | — | — | 4200 |
+    | **Macro Avg** | **0.74** | **0.74** | **0.74** | — |
+    | **Weighted Avg** | **0.74** | **0.74** | **0.74** | — |
+
+    ### Metric Interpretation (Simplified for Users)
+
+    - **Precision** → When the model predicts a class, how *correct* is it?  
+      Higher precision means fewer **false alarms**.
+    - **Recall** → Of all real cases, how many did the model successfully detect?  
+      Higher recall means fewer **missed cases**.
+    - **F1-Score** → Balance of precision + recall.  
+      Good for health-related predictions.
+    - **Accuracy (0.74)** → The model correctly predicts 74% of all cases.
+
+    ✔ The model is strongest at detecting **Type 2 Diabetes**.  
+    ✔ It performs well on **No Diabetes**.  
+    ⚠ It is moderately accurate for **Pre-Diabetes**, which is the hardest class to predict.
+
+    ### Trained Features
+    - `postprandial_glucose_level (3 hours after meal)`
+    - `diabetes_risk_score` (output from the previous model)
+    """)
+
+    st.divider()
+
+    st.write("Trainning Dataset https://www.kaggle.com/datasets/mohankrishnathalla/diabetes-health-indicators-dataset")
+
+    st.info(desclaimer)
