@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import joblib
 import pickle 
-import os
 
 desclaimer = """⚠ **Disclaimer:**  
 This application uses **synthetic (artificially generated) health data that reflect real data from Kaggle.** Use this App for **educational, research, and self-screening purposes only**.  
@@ -226,7 +225,7 @@ if st.session_state.Page == "Estiiamate Diabetes Risk":
 elif st.session_state.Page == "Diabetes Diagnoser":
     st.title("Check Diabetes Status Here!")
     st.write(
-        "Welcome to the Diabetes Risk Checker! 🩺 This app helps you assess your diabetes based on your personal information, lifestyle habits, and blood sugar levels."
+        "Welcome to the Diabetes Diagnoser! 🩺 This app helps you assess your diabetes based on your personal information, lifestyle habits, and blood sugar levels."
     )
 
     # Instructions to use the app
