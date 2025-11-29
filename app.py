@@ -299,6 +299,8 @@ elif st.session_state.Page == "Diabetes Diagnoser":
     }
     # Diagnose diabetes
 
+    st.header("4. Diagnose Your Diabetes Status:")
+
     if st.button("Diagnose Diabetes"):
 
         if glucose_postprandial == None or glucose_postprandial <= 0:
