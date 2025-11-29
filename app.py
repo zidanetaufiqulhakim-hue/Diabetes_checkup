@@ -5,7 +5,7 @@ import joblib
 import pickle 
 
 desclaimer = """⚠ **Disclaimer:**  
-This application uses **synthetic (artificially generated) health data that reflect real data from Kaggle.** Use this App for **educational, research, and self-screening purposes only**.  
+This application uses **synthetic (artificially generated) health data that reflect real data, taken from Kaggle.** Use this App for **educational, research, and self-screening purposes only**.  
 It is **not** intended to diagnose, treat, or replace professional medical evaluation.  
 For any health concerns, please consult a licensed healthcare provider."""
 
