@@ -209,7 +209,7 @@ if st.session_state.Page == "Estiiamate Diabetes Risk":
 
         with c2:
                 # Display risk categories
-                st.markdown(" *Below 26: Low Risk | 26-40: Moderate Risk | Above 40: High Risk*")
+                st.markdown(" *Below 28: Low Risk | 26-40: Moderate Risk | Above 40: High Risk*")
 
                 # Display risk interpretationstreamlit
                 if risk_score < 28:
