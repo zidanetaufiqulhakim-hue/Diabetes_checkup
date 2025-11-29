@@ -103,7 +103,8 @@ else:
     pass
 
 # --------Side Bar Go-to---------
-st.sidebar.title("Go to:")
+st.sidebar.title("🩺 ")
+st.sidebar.header("Go to:")
 
 # Container 1
 with st.sidebar.container():
@@ -123,6 +124,11 @@ with st.sidebar.container():
 # copyright info
 st.sidebar.divider()
 st.sidebar.markdown("© 2025 zidanetaufiqulhakim-hue (GitHub). All rights reserved.")
+# repository link for contributions and learning
+st.sidebar.divider()
+st.sidebar.markdown("Contributions and feedback are welcome!")
+st.sidebar.markdown("Repository:")
+st.sidebar.write("https://github.com/zidanetaufiqulhakim-hue/Diabetes_checkup")
 
 #-------------------------------- RENDERING PAGES --------------------------------#
 
