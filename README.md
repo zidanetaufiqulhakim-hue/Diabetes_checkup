@@ -14,12 +14,12 @@ MAE (Mean Absolute Error): 1.2084
 
 ### What These Metrics Mean:
 
-MSE measures how far predictions are from actual values on average, squared.
-Lower = better.
-An MSE of 2.26 means the model’s predictions are reasonably close to real risk scores.
-MAE measures the average absolute difference between predicted and actual scores.
-An MAE of 1.20 means predictions are usually within ±1.2 risk points of the true value.
-This makes the estimator reliable for screening, not medical diagnosis.
+- MSE measures how far predictions are from actual values on average, squared.
+- Lower = better.
+- An MSE of 2.26 means the model’s predictions are reasonably close to real risk scores.
+- MAE measures the average absolute difference between predicted and actual scores.
+  
+-An MAE of 1.20 means predictions are usually within ±1.2 risk points of the true value.This makes the estimator reliable for screening, not medical diagnosis.
 
 ### Trained Features
 
