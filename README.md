@@ -1,3 +1,6 @@
+# Check the Streamlit App to try the models Here: 
+https://diabetescheckup-hdugnkkzkmyhfaprt7sqjx.streamlit.app/
+
 # 📘 About the Models
 This app uses two machine learning models to help you understand your diabetes status:
 
