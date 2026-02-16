@@ -19,7 +19,7 @@ def predict_diabetes_risk(input_data):
         input_df = pd.DataFrame([input_data], columns=input_data.keys())
 
         # Predict diabetes risk using the loaded model
-        risk_score = db_risk_estimator.predict(input_df)
+        risk_score = float(db_risk_estimator.predict(input_df)[0])
         return risk_score
 
 def diagnose_diabetes(input_data_db_diagnoser):
@@ -205,7 +205,7 @@ if st.session_state.Page == "Estiiamate Diabetes Risk":
             # Display the risk scorestreamlit
             c1a, c1b, c1c = st.columns(3)
             with c1b: # -> center the output
-                st.markdown(f"# {risk_score[0]:.0f}")
+                st.markdown(f"# {risk_score:.0f}")
 
         with c2:
                 # Display risk categories
@@ -294,8 +294,8 @@ elif st.session_state.Page == "Diabetes Diagnoser":
 
     # Prepare input data for diabetes diagnoserstreamlit run
     input_data_db_diagnoser = {
-    "diabetes_risk_score": risk_score,
-    "glucose_postprandial": glucose_postprandial
+    "diabetes_risk_score": float(risk_score),
+    "glucose_postprandial": float(glucose_postprandial)
     }
     # Diagnose diabetes
 
